@@ -1,49 +1,100 @@
-//süre tamamlandıktan sonra fonksiyon çalışacak
-setTimeout(() => {
-  console.log(deneme);
-}, 2000);
+import axios from "axios";
+// //süre tamamlandıktan sonra fonksiyon çalışacak
+// setTimeout(() => {
+//   console.log(deneme);
+// }, 2000);
 
-setInterval(() => {
-  console.log("Merhaba, ben her saniye çalışacağım");
-}, 1000);
+// setInterval(() => {
+//   console.log("Merhaba, ben her saniye çalışacağım");
+// }, 1000);
 
-const sayHi = (cb) => {
-  console.log("Merhaba");
-  cb();
+// const sayHi = (cb) => {
+//   console.log("Merhaba");
+//   cb();
+// };
+
+// sayHi(() => {
+//   console.log("Hello");
+// });
+
+// //veri kaynağına bağlanıp veriyi bize gösterir
+// fetch("https://jsonplaceholder.typicode.com/users")
+//   .then((data) => data.json())
+//   .then((users) => {
+//     console.log("Users çekildi", users);
+//     fetch("https://jsonplaceholder.typicode.com/users/1")
+//       .then((user) => user.json())
+//       .then((gelenUser) => console.log("User1 çekildi", gelenUser));
+//   });
+
+// //üsttekine göre daha okunaklı async await
+// async function getData() {
+//   //await olan yerde bekler çalıştırıp işlem bitince sonraki satıra geçer
+//   const data = await (
+//     await fetch("https://jsonplaceholder.typicode.com/users")
+//   ).json();
+
+//   const user1 = await (
+//     await fetch("https://jsonplaceholder.typicode.com/users/1")
+//   ).json();
+
+//   console.log(data);
+//   console.log(user1);
+// }
+
+// getData();
+
+// //anon fonksiyon
+// (async () => {
+//   await console.log("selam");
+// })();
+
+// async function getData() {
+
+//   const {data} = await axios("https://jsonplaceholder.typicode.com/users");//obje dönüyor onun içindeki {data ile görebiliriz}
+
+//   const {data: user1} = await axios("https://jsonplaceholder.typicode.com/users/1");
+
+//   console.log(data);
+//   console.log(user1);
+// }
+
+// getData();
+
+//.then fetch promise dönüyor demek anlamına geliyor
+// fetch("https://jsonplaceholder.typicode.com/users")
+//   .then((data) => data.json())
+//   .then((users) => {
+//     console.log("Users çekildi", users);
+//     fetch("https://jsonplaceholder.typicode.com/users/1")
+//       .then((user) => user.json())
+//       .then((gelenUser) => console.log("User1 çekildi", gelenUser));
+//   });
+
+//resolve olursa olumlu ve then'e düşer reject olumsuz ve .catch()'e düşer
+const getComments = (number) => {
+  return new Promise((resolve, reject) => {
+    //console.log("comments");
+    //eğer gönderilen 1 ise kabul değil ise ret
+    if (number === 1) {
+      resolve("Comments");
+    } else {
+      reject("Bir problem oluştu");
+    }
+  });
 };
 
-sayHi(() => {
-  console.log("Hello");
-});
+//anon promise kullanımı
+(async ()=>{
+  const comments = await getComments()
+  console.log(comments);
+})
 
-//veri kaynağına bağlanıp veriyi bize gösterir
-fetch("https://jsonplaceholder.typicode.com/users")
-  .then((data) => data.json())
-  .then((users) => {
-    console.log("Users çekildi", users);
-    fetch("https://jsonplaceholder.typicode.com/users/1")
-      .then((user) => user.json())
-      .then((gelenUser) => console.log("User1 çekildi", gelenUser));
-  });
+getComments(1)
+  .then((data) => console.log(data)) //çıktı comments olur
+  .catch((e) => console.log(e));
 
-//üsttekine göre daha okunaklı async await
-async function getData() {
-  //await olan yerde bekler çalıştırıp işlem bitince sonraki satıra geçer
-  const data = await (
-    await fetch("https://jsonplaceholder.typicode.com/users")
-  ).json();
-
-  const user1 = await (
-    await fetch("https://jsonplaceholder.typicode.com/users/1")
-  ).json();
-
-  console.log(data);
-  console.log(user1);
-}
-
-getData();
-
-//anon fonksiyon
-(() => {
-  console.log("selam");
-})();
+  //birden çok promise varsa
+Promise.all([getComments()])
+.then(console.log())
+.catch(console.log());
